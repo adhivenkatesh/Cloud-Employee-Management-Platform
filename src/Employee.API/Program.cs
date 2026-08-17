@@ -3,6 +3,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddOpenApi();
 
+var appName = Environment.GetEnvironmentVariable("APP_NAME");
+var version = Environment.GetEnvironmentVariable("APP_VERSION");
+var company = Environment.GetEnvironmentVariable("COMPANY_NAME");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -17,7 +21,9 @@ app.MapGet("/", () =>
 {
     return Results.Ok(new
     {
-        Message = "Welcome to Cloud Employee Management Platform (CEMP)"
+        Message = $"Welcome to {appName}",
+        Version = version,
+        Company = company
     });
 });
 
@@ -25,9 +31,9 @@ app.MapGet("/api/config", () =>
 {
     return Results.Ok(new
     {
-        ApplicationName = "Cloud Employee Management Platform",
-        Environment = "Development",
-        ApiUrl = "http://backend-service"
+        ApplicationName = appName,
+        Version = version,
+        Company = company
     });
 });
 
