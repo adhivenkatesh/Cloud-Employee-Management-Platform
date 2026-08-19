@@ -7,6 +7,10 @@ var appName = Environment.GetEnvironmentVariable("APP_NAME");
 var version = Environment.GetEnvironmentVariable("APP_VERSION");
 var company = Environment.GetEnvironmentVariable("COMPANY_NAME");
 
+var dbUser = Environment.GetEnvironmentVariable("DB_USERNAME");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -33,7 +37,11 @@ app.MapGet("/api/config", () =>
     {
         ApplicationName = appName,
         Version = version,
-        Company = company
+        Company = company,
+
+        DatabaseUser = dbUser,
+        DatabasePassword = dbPassword,
+        ApiKey = apiKey
     });
 });
 
