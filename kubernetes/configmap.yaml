@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cemp-config
+
+data:
+  APP_NAME: "Cloud Employee Management Platform"
+  APP_VERSION: "v1"
+  COMPANY_NAME: "CEMP Technologies"
