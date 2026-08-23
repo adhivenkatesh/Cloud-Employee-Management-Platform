@@ -3,6 +3,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddOpenApi();
 
+var health = "Running Successfully!.";
+
 var appName = Environment.GetEnvironmentVariable("APP_NAME");
 var version = Environment.GetEnvironmentVariable("APP_VERSION");
 var company = Environment.GetEnvironmentVariable("COMPANY_NAME");
@@ -58,5 +60,11 @@ app.MapGet("/api/config", () =>
     });
 });
 
-
+app.MapGet("/api/health", () =>
+{
+    return Results.Ok(new
+    {
+        Health = health
+    });
+});
 app.Run("http://0.0.0.0:8080");
