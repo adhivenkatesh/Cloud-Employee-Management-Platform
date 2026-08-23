@@ -40,7 +40,7 @@ jobs:
     - name: Deploy to Kubernetes using Helm
       run: |
 
-        helm upgrade --install cemp ./cemp-chart \
+        helm upgrade --install cemp ./containerregistrycemp-chart \
         --set image.repository=${{ secrets.ACR_LOGIN_SERVER }}/cemp-api \
         --set image.tag=${{ github.sha }}
 
