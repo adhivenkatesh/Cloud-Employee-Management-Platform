@@ -33,7 +33,7 @@ app.MapGet("/", () =>
 {
     return Results.Ok(new
     {
-        Message = $"Welcome !  to {appName}",
+        Message = $"Welcome! to {appName}",
         Version = version,
         Company = company
     });
