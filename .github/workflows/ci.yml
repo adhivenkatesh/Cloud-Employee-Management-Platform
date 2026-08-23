@@ -36,7 +36,13 @@ jobs:
       run: |
         docker push \
         ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:${{ github.sha }}
+        
+    - name: Deploy to Kubernetes using Helm
+      run: |
 
+        helm upgrade --install cemp ./cemp-chart \
+        --set image.repository=${{ secrets.ACR_LOGIN_SERVER }}/cemp-api \
+        --set image.tag=${{ github.sha }}
 
     - name: Build Completed
       run: |
