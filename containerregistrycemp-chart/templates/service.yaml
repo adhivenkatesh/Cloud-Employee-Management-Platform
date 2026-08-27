@@ -2,16 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cemp-api-service
-  labels:
-    {{- include "cemp-chart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 8080
       protocol: TCP
-      {{- if and (eq .Values.service.type "NodePort") .Values.service.nodePort }}
-      nodePort: {{ .Values.service.nodePort }}
-      {{- end }}
   selector:
-    {{- include "cemp-chart.selectorLabels" . | nindent 6 }}
+    app.kubernetes.io/name: cemp-chart
+    app.kubernetes.io/instance: cemp
