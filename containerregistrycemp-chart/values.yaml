@@ -1,3 +1,10 @@
+
+serviceAccount:
+  create: false
+  name: ""
+  annotations: {}
+  automount: true
+  
 replicaCount: 3
 
 image:
