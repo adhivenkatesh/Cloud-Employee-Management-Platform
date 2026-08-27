@@ -18,6 +18,9 @@ service:
 
 ingress:
   enabled: false
+  
+httpRoute:
+  enabled: false
 
 resources:
   limits:
