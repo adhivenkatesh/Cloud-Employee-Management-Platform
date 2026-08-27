@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddOpenApi();
 
-var health = "Running Successfully!.";
+var health = "Running successfully with github-actions!.";
 
 var appName = Environment.GetEnvironmentVariable("APP_NAME");
 var version = Environment.GetEnvironmentVariable("APP_VERSION");

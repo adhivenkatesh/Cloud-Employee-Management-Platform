@@ -24,14 +24,20 @@ jobs:
       run: |
         docker build \
         -t ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:${{ github.sha }} \
+        -t ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:latest \
         -f docker/Dockerfile .
 
     - name: Push Docker Image
       run: |
-        docker push \
-        ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:${{ github.sha }}
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:${{ github.sha }}
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/cemp-api:latest
 
     # --- AUTOMATED FIXES FOR THE 1-HOUR LAB RESET BELOW ---
+
+    - name: Fix Control-Plane Taint (Lab VM)
+      run: |
+        kubectl taint nodes --all node-role.kubernetes.io/control-plane- 2>/dev/null || true
+        kubectl taint nodes --all node-role.kubernetes.io/master- 2>/dev/null || true
 
     - name: Setup Azure Registry Secret in Kubernetes
       run: |
@@ -48,7 +54,7 @@ jobs:
         kubectl create configmap cemp-config \
           --from-literal=APP_NAME="Cloud Employee Management Platform" \
           --from-literal=APP_VERSION="1.0" \
-          --from-literal=COMPANY_NAME="MyCompany"
+          --from-literal=COMPANY_NAME="CEMP Corp"
 
     - name: Setup Database Credentials Secret
       run: |
@@ -67,8 +73,19 @@ jobs:
       run: |
         helm upgrade --install cemp ./containerregistrycemp-chart \
         --set image.repository=${{ secrets.ACR_LOGIN_SERVER }}/cemp-api \
-        --set image.tag=${{ github.sha }}
+        --set image.tag=${{ github.sha }} \
+        --set service.type=NodePort \
+        --set service.port=80 \
+        --set service.nodePort=30080 \
+        --set replicaCount=1 \
+        --set serviceAccount.create=false
+
+    - name: Verify Deployment
+      run: |
+        kubectl get pods
+        kubectl get svc cemp-api-service
+        kubectl get events --sort-by=.lastTimestamp | tail -20
 
     - name: Build Completed
       run: |
-        echo "Docker image pushed and application deployed cleanly!"
+        echo "Docker image pushed with ${{ github.sha }} and latest tag and application deployed cleanly!"
