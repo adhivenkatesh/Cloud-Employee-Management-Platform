@@ -16,6 +16,9 @@ service:
   port: 80
   nodePort: 30080
 
+ingress:
+  enabled: false
+
 resources:
   limits:
     cpu: 500m
