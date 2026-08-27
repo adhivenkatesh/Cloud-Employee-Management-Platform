@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: cemp-api-service
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 80
       targetPort: 8080
       protocol: TCP
   selector:
-    app.kubernetes.io/name: cemp-chart
-    app.kubernetes.io/instance: cemp
+    app: cemp-api
